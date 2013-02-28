@@ -1,15 +1,15 @@
-//--FIRST (ERROR: missing setup() and loop())-------------------------
+//--FIRST (ERROR: missing setup() and loop()) ----------------------------------------------
 
 
 
-//--SECOND (VALID: but does nothing)----------------------------------
+//--SECOND (VALID: but does nothing) -------------------------------------------------------
 void setup(){}
 
 void loop(){}
 
 
 
-//--THIRD (VALID: BUT: led won't light without pinMode)---------------
+//--THIRD (VALID: BUT: led won't light without pinMode) ------------------------------------
 void setup(){
 }
 
@@ -19,7 +19,7 @@ void loop(){
 
 
 
-//--FOURTH (VALID: lights led on pin 5)-------------------------------
+//--FOURTH (VALID: lights led on pin 5) ----------------------------------------------------
 void setup(){
   pinMode(5, OUTPUT);
 }
@@ -30,7 +30,7 @@ void loop(){
 
 
 
-//--FIFTH (ERROR: missing semicolon)----------------------------------
+//--FIFTH (ERROR: missing semicolon [talk about white space!!]) ----------------------------
 void setup(){
   pinMode(5, OUTPUT);
 }
@@ -42,7 +42,7 @@ void loop(){
 
 
 
-//--SIXTH (VALID: BUT: the LED will blink too fast)-------------------
+//--SIXTH (VALID: BUT: the LED will blink too fast) ----------------------------------------
 void setup(){
   pinMode(5, OUTPUT);
 }
@@ -54,7 +54,8 @@ void loop(){
 
 
 
-//--SEVENTH (VALID: take this opportunity to play around)-------------
+
+//--SEVENTH (VALID: delays!! take this opportunity to play around) -------------------------
 void setup(){
   pinMode(5, OUTPUT);
 }
@@ -63,32 +64,385 @@ void loop(){
   digitalWrite(5, HIGH);
   delay(500);
   digitalWrite(5, LOW);
-  (delay(800);
+  delay(800);
 }
 
 
 
+//--EIGHTH (VALID: introduce analog and digital read BUT: useless) -------------------------
+void setup(){
+  pinMode(2, INPUT);
+}
+
+void loop(){
+  digitalRead(2);
+  analogRead(0);
+}
 
 
 
+//--NINTH (VALID: BUT: serial connection not established) ----------------------------------
+void setup(){}
+
+void loop(){
+  Serial.println(“Do Arduinos dream of electric sheep?”);
+}
 
 
 
+//--TENTH (VALID: taking a few steps back to demonstrate monitoring) -----------------------
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  Serial.println(“Do Arduinos dream of electric sheep?”);
+}
 
 
 
+//--ELEVENTH (VALID: demonstrate printing numbers) -----------------------------------------
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  Serial.println(0);
+}
 
 
 
+//--TWELFTH (VALID: nesting! and now we can see readings for EVERY sensor) -----------------
+void setup(){
+  Serial.begin(9600);
+  pinMode(2, INPUT);
+}
+
+void loop(){
+  Serial.println(digitalRead(2));
+}
 
 
 
+//--THIRTEENTH (ERROR: didn’t specify var type) --------------------------------------------
+x = 5;
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  Serial.println(x);
+}
 
 
 
+//--FOURTEENTH (VALID: now we can see our variable! talk about declaring functions here) ---
+int x = 5;
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  Serial.println(x);
+}
 
 
-//--FINAL
+
+//--FIFTEENTH (ERROR: exact terms are crucial, play with this) -----------------------------
+integer x = 5;
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  Serial.println(x);
+}
+
+
+
+//--SIXTEENTH (VALID: we can change OR set variables while running) ------------------------
+int x = 5;
+
+void setup(){
+  Serial.begin(9600);
+  x = 10;
+}
+
+void loop(){
+  Serial.println(x);
+}
+
+
+
+//--SEVENTEENTH (VALID: lets combine everything so far... and add a little math) -----------
+int potPin = 0;
+int buttonPin = 2;
+int LEDaPin = 5;
+int LEDbPin = 6;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(buttonPin, INPUT);
+  pinMode(LEDaPin, OUTPUT);
+  pinMode(LEDbPin, OUTPUT);
+  
+void loop(){
+  digitalWrite(LEDaPin, digitalRead(buttonPin));
+  digitalWrite(LEDbPin, 1-digitalRead(buttonPin));
+  Serial.println(analogRead(potPin));
+}
+
+
+
+//--EIGHTEENTH (VALID: let’s add comments and a little more variable storage) --------------
+//Name our pins (this is a comment, it doesn’t get evaluated)
+int potPin = 0
+int buttonPin = 2;
+int LEDaPin = 5;
+int LEDbPin = 6;
+
+//Set up variables for info storage
+int buttonReading;
+int potReading;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(buttonPin, INPUT);
+  pinMode(LEDaPin, OUTPUT);
+  pinMode(LEDbPin, OUTPUT);
+  
+void loop(){
+  //First, we store the readings
+  buttonReading = digitalRead(buttonPin);
+  potReading = analogRead(potPin);
+  //Then, we use them in other functions
+  digitalWrite(LEDaPin, buttonReading);
+  digitalWrite(LEDbPin, 1-buttonReading);
+  Serial.println(potReading);
+}
+
+
+
+//--NINETEENTH (ERROR: semicolon after include... it’s special) ----------------------------
+#include <Servo.h>;
+
+void setup(){}
+
+void loop(){}
+
+
+
+//--TWENTIETH (VALID: BUT: does nothing) ---------------------------------------------------
+#include <Servo.h>
+
+void setup(){}
+
+void loop(){}
+
+
+
+//--TWENTY-FIRST (VALID: let’s move a servo) -----------------------------------------------
+#include <Servo.h>
+
+Servo bob;
+
+void setup(){
+  bob.attach(4);
+}
+
+void loop(){
+  bob.write(90);
+}
+
+
+
+//--TWENTY-SECOND (VALID: here we add a second servo and play with delays) -----------------
+#include <Servo.h>
+
+Servo servoA;
+Servo servoB;
+
+int servoApin = 3;
+int servoBpin = 4;
+
+void setup(){
+  servoA.attach(servoApin);
+  servoB.attach(servoBpin);
+}
+
+void loop(){
+  servoA.write(100);
+  servoB.write(20);
+}
+
+
+
+//--TWENTY-THIRD (VALID: let’s try out a special function: map(). There are lots!) -------
+#include <Servo.h>
+
+Servo servoA;
+Servo servoB;
+
+int potPin = 0;
+int photoResPin = 1;
+int servoApin = 3;
+int servoBpin = 4;
+
+int mappedValueA;
+int mappedValueB;
+
+void setup(){
+  servoA.attach(servoApin);
+  servoB.attach(servoBpin);
+}
+
+void loop(){
+  mappedValueA = map(analogRead(potPin), 0, 1023, 0, 180); 
+  servoA.write(mappedValueA);
+  mappedValueB = map(analogRead(photoResPin), 0, 1023, 0, 180);
+  servoB.write(mappedValueB);
+}
+
+
+//--TWENTY-FOURTH (ERROR: equals sign is NOT for testing equality) -------------------------
+int LEDaPin = 5;
+
+void setup(){
+  pinMode(LEDaPin, OUTPUT);
+}
+
+void loop(){
+  if (1=1) {
+    digitalWrite(LEDaPin, HIGH);
+  }
+}
+
+
+
+//--TWENTY-FIFTH (VALID: double equals sign IS for testing equality) -----------------------
+int LEDaPin = 5;
+
+void setup(){
+  pinMode(LEDaPin, OUTPUT);
+}
+
+void loop(){
+  if (1==1) {
+    digitalWrite(LEDaPin, HIGH);
+  }
+}
+
+
+
+//--TWENTY-SIXTH (VALID: we introduce else and play around to show it in action) -----------
+int LEDaPin = 5;
+
+void setup(){
+  pinMode(LEDaPin, OUTPUT);
+}
+
+void loop(){
+  if (1==1) {
+    digitalWrite(LEDaPin, HIGH);
+  } else {
+    digitalWrite(LEDaPin, LOW);
+  }
+}
+
+
+
+//--TWENTY-SEVENTH (VALID: with a button now [also try with another LED]) ------------------
+int LEDaPin = 5;
+int LEDbPin = 6;
+int buttonPin = 0;
+
+void setup(){
+  pinMode(LEDaPin, OUTPUT);
+  pinMode(LEDbPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
+}
+
+void loop(){
+  if (digitalRead(buttonPin)==1) {
+    digitalWrite(LEDaPin, HIGH);
+    //digitalWrite(LEDbPin, LOW);
+  } else {
+    digitalWrite(LEDaPin, LOW);
+    //digitalWrite(LEDbPin, HIGH);
+  }
+}
+
+
+
+//--TWENTY-EIGHTH (VALID: everything up until now, together) -------------------------------
+#include <Servo.h>
+
+//Declare servo objects
+Servo servoA;
+Servo servoB;
+
+//Declare all pin variables
+int potPin = 0;
+int photoResPin = 1;
+int buttonPin = 2;
+int servoApin = 3;
+int servoBpin = 4;
+int LEDaPin = 5;
+int LEDbPin = 6;
+
+//Create two variables for storing readings
+int valA;
+int valB;
+
+
+void setup() {
+  //Connect the two servos
+  servoA.attach(servoApin);
+  servoB.attach(servoBpin);
+  
+  //Set digital pins to the appropriate mode
+  pinMode(buttonPin, INPUT);
+  pinMode(LEDaPin, OUTPUT);
+  pinMode(LEDbPin, OUTPUT);
+}
+
+
+void loop() {  
+  //Get readings from potentiometer and photoresistor
+  valA = analogRead(potPin);
+  valB = analogRead(photoResPin);
+  
+  //Map vals from range of 0-1023 to range to 1-180
+  valA = map(valA, 0, 1023, 0, 180);
+  valB = map(valB, 0, 1023, 0, 180);
+  
+  //Check if the button is pressed
+  if (digitalRead(buttonPin) == HIGH) {
+    //Switch which LED is lit
+    digitalWrite(LEDaPin, HIGH);
+    digitalWrite(LEDbPin, LOW);
+    
+    //Set servos with vals
+    servoA.write(valA);
+    servoB.write(valB);
+    
+  } else {
+    //Switch which LED is lit
+    digitalWrite(LEDaPin, LOW);
+    digitalWrite(LEDbPin, HIGH);
+    
+    //Set servos with vals
+    servoA.write(valB);
+    servoB.write(valA);
+  }
+}
+
+
+
+//--FINAL (VALID: EVERYTHING TOGETHER!!!) --------------------------------------------------
 #include <Servo.h>
 
 //Declare servo objects
